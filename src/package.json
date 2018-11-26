@@ -1,0 +1,29 @@
+{
+  "name": "productone-nodeservice",
+  "version": "1.0.0",
+  "description": "App for interaction with node",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LedgerLeopard/ProductOne-NodeService.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Anna Goreva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LedgerLeopard/ProductOne-NodeService/issues"
+  },
+  "homepage": "https://github.com/LedgerLeopard/ProductOne-NodeService#readme",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "http": "0.0.0",
+    "log4js": "^3.0.6",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
+  }
+}
