@@ -8,7 +8,7 @@ const emitTransactions = (socket) => {
     web3.eth.subscribe('pendingTransactions' ,
         (error, result) => {
         if (!error)
-            logger.info(result);
+            logger.info(`Got transaction with hash ${result}`);
     })
         .on('data', async (txHash) => {
             const trx = await web3http.eth.getTransaction(txHash);
@@ -31,4 +31,24 @@ const emitTransactions = (socket) => {
         });
 };
 
-module.exports = { emitTransactions };
+const emitBlocks = (socket) => {
+    web3.eth.subscribe('newBlockHeaders' ,
+        (error, result) => {
+            if (!error) {
+                logger.info(`Got block with hash ${result.hash}`);
+                logger.info(result);}
+        }).on('data', async (block) => {
+            if (!block.hash) return;
+            const trxCount = await web3http.eth.getBlockTransactionCount(block.hash);
+            const blockToEmit = {
+                number: block.number,
+                miner: block.miner,
+                timeDate: new Date(block.timestamp),
+                trxCount,
+            };
+            socket.emit('block', blockToEmit);
+            logger.info(`Block with number ${block.number} was sent\n${JSON.stringify(blockToEmit)}`);
+        });
+};
+
+module.exports = { emitTransactions, emitBlocks };

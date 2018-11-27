@@ -11,4 +11,5 @@ server.listen(PORT, async () => {
     logger.info(`${server.name} listening at ${PORT}`);
     const socket = socketIo(`${process.env.BACKEND_URL}:${BACKEND_PORT}`);
     subscriber.emitTransactions(socket);
+    subscriber.emitBlocks(socket);
 });
