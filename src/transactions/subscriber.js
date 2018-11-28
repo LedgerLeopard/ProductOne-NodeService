@@ -3,7 +3,10 @@ const Web3 = require('web3');
 const web3 = new Web3(`ws://localhost:${BLOCKCHAIN_PORT}`);
 const web3http = new Web3(`http://localhost:${BLOCKCHAIN_PORT}`);
 const logger = require('../utils/logger');
-const networkName = 'Network1';
+const fs = require('fs');
+const configFile = fs.readFileSync('/init', 'utf8');
+const yaml = require('js-yaml');
+const networkName = yaml.safeLoad(configFile)["Network name"];
 
 const emitTransactions = (socket) => {
     web3.eth.subscribe('pendingTransactions' ,
