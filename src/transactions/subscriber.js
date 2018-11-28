@@ -3,6 +3,7 @@ const Web3 = require('web3');
 const web3 = new Web3(`ws://localhost:${BLOCKCHAIN_PORT}`);
 const web3http = new Web3(`http://localhost:${BLOCKCHAIN_PORT}`);
 const logger = require('../utils/logger');
+const networkName = 'Network1';
 
 const emitTransactions = (socket) => {
     web3.eth.subscribe('pendingTransactions' ,
@@ -25,6 +26,7 @@ const emitTransactions = (socket) => {
                 blockNumber: trx.blockNumber,
                 index: trx.transactionIndex,
                 type,
+                networkName,
             };
             socket.emit('transaction', transaction);
             logger.info(`Trx ${txHash} was sent`);
@@ -43,8 +45,9 @@ const emitBlocks = (socket) => {
             const blockToEmit = {
                 number: block.number,
                 miner: block.miner,
-                timeDate: new Date(block.timestamp),
+                timeDate: new Date(),
                 trxCount,
+                networkName,
             };
             socket.emit('block', blockToEmit);
             logger.info(`Block with number ${block.number} was sent\n${JSON.stringify(blockToEmit)}`);
