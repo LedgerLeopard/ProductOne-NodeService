@@ -7,6 +7,7 @@ const fs = require('fs');
 const configFile = fs.readFileSync('/init', 'utf8');
 const yaml = require('js-yaml');
 const networkName = yaml.safeLoad(configFile)["Network name"];
+const token = require('../utils/jwt');
 
 const emitTransactions = (socket) => {
     web3.eth.subscribe('pendingTransactions' ,
@@ -30,6 +31,7 @@ const emitTransactions = (socket) => {
                 index: trx.transactionIndex,
                 type,
                 networkName,
+                token
             };
             socket.emit('transaction', transaction);
             logger.info(`Trx ${txHash} was sent`);
@@ -51,6 +53,7 @@ const emitBlocks = (socket) => {
                 timeDate: new Date(),
                 trxCount,
                 networkName,
+                token
             };
             socket.emit('block', blockToEmit);
             logger.info(`Block with number ${block.number} was sent\n${JSON.stringify(blockToEmit)}`);
