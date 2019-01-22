@@ -1,19 +1,15 @@
 const jwt = require('jsonwebtoken');
-const {
-    JWT_SECRET_KEY,
-    NODE_SERVICE_TOKEN,
-} = require('../config');
 
-function generateToken() {
+function generateToken(token, secret) {
     return jwt.sign(
         {
-            token: NODE_SERVICE_TOKEN
+            token
         },
-        JWT_SECRET_KEY,
+        secret,
         {
             noTimestamp: true,
         }
     );
 }
 
-module.exports = generateToken();
+module.exports = generateToken;
