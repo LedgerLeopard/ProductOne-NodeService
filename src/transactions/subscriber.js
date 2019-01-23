@@ -1,7 +1,8 @@
 const {
     BLOCKCHAIN_PORT,
     JWT_SECRET_KEY,
-    NODE_SERVICE_TOKEN
+    NODE_SERVICE_TOKEN,
+    BLOCKCHAIN_WS_PORT
 } = require('../config');
 const Web3 = require('web3');
 const web3 = new Web3(`ws://localhost:${BLOCKCHAIN_WS_PORT}`);
