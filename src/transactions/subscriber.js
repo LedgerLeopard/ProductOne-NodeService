@@ -5,8 +5,10 @@ const {
     BLOCKCHAIN_WS_PORT
 } = require('../config');
 const Web3 = require('web3');
-const web3 = new Web3(`ws://localhost:${BLOCKCHAIN_WS_PORT}`);
-const web3http = new Web3(`https://localhost:${BLOCKCHAIN_PORT}`);
+//const web3 = new Web3(`ws://localhost:${BLOCKCHAIN_WS_PORT}`);
+//const web3http = new Web3(`https://localhost:${BLOCKCHAIN_PORT}`);
+const web3 = new Web3('ws://13.69.56.53:8546');
+const web3http = new Web3('http://13.69.56.53:9045');
 const logger = require('../utils/logger');
 const fs = require('fs');
 const configFile = fs.readFileSync('/init', 'utf8');
@@ -50,8 +52,9 @@ const emitBlocks = (socket) => {
         (error, result) => {
             if (!error) {
                 logger.info(`Got block with hash ${result.hash}`);
-                logger.info(result);}
+                }
         }).on('data', async (block) => {
+            logger.info(`Try to send block ${block.number}`);
             if (!block.hash) return;
             const trxCount = await web3http.eth.getBlockTransactionCount(block.hash);
             const blockToEmit = {
