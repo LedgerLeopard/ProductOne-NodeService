@@ -4,7 +4,7 @@ const {
     NODE_SERVICE_TOKEN
 } = require('../config');
 const Web3 = require('web3');
-const web3 = new Web3(`ws://localhost:${BLOCKCHAIN_PORT}`);
+const web3 = new Web3(`ws://localhost:${BLOCKCHAIN_WS_PORT}`);
 const web3http = new Web3(`http://localhost:${BLOCKCHAIN_PORT}`);
 const logger = require('../utils/logger');
 const fs = require('fs');
