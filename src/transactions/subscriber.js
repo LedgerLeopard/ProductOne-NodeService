@@ -24,6 +24,7 @@ const emitTransactions = (socket) => {
             logger.info(`Got transaction with hash ${result}`);
     })
         .on('data', async (txHash) => {
+            logger.info(`Try to send trx ${txHash}`);
             const trx = await web3http.eth.getTransaction(txHash);
             if (!trx.blockNumber) return;
             let type = 'Migration';
