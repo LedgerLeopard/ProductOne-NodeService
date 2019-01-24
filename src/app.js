@@ -15,7 +15,7 @@ const server = http.createServer(app);
 server.listen(PORT, async () => {
     logger.info(`${SERVER_NAME} listening at ${PORT}`);
     const socket = socketIo(`${BACKEND_URL}:${BACKEND_PORT}`);
-    logger.info(`Websockets are connected to ${BACKEND_URL}:${BACKEND_PORT}`);
+    logger.info(`Websockets are connected to backend ${BACKEND_URL}:${BACKEND_PORT}`);
     subscriber.emitTransactions(socket);
     subscriber.emitBlocks(socket);
 });
