@@ -5,8 +5,8 @@ const {
     BLOCKCHAIN_WS_PORT
 } = require('../config');
 const Web3 = require('web3');
-const web3blocks = new Web3(`ws://localhost:${BLOCKCHAIN_WS_PORT}`);
-const web3txs = new Web3(`ws://localhost:${BLOCKCHAIN_WS_PORT}`);
+const web3blocks = new Web3(`ws://127.0.0.1:${BLOCKCHAIN_WS_PORT}`);
+const web3txs = new Web3(`ws://127.0.0.1:${BLOCKCHAIN_WS_PORT}`);
 const web3http = new Web3(`http://127.0.0.1:${BLOCKCHAIN_PORT}`);
 const logger = require('../utils/logger');
 const fs = require('fs');
