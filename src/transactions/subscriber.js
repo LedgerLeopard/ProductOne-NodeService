@@ -2,12 +2,13 @@ const {
     BLOCKCHAIN_PORT,
     JWT_SECRET_KEY,
     NODE_SERVICE_TOKEN,
-    BLOCKCHAIN_WS_PORT
+    BLOCKCHAIN_WS_PORT,
+    BLOCKCHAIN_HOST
 } = require('../config');
 const Web3 = require('web3');
-const web3blocks = new Web3(`ws://52.166.184.251:${BLOCKCHAIN_WS_PORT}`);
-const web3txs = new Web3(`ws://52.166.184.251:${BLOCKCHAIN_WS_PORT}`);
-const web3http = new Web3(`http://52.166.184.251:${BLOCKCHAIN_PORT}`);
+const web3blocks = new Web3(`ws://${BLOCKCHAIN_HOST}:${BLOCKCHAIN_WS_PORT}`);
+const web3txs = new Web3(`ws://${BLOCKCHAIN_HOST}:${BLOCKCHAIN_WS_PORT}`);
+const web3http = new Web3(`http://${BLOCKCHAIN_HOST}:${BLOCKCHAIN_PORT}`);
 const logger = require('../utils/logger');
 const fs = require('fs');
 const configFile = fs.readFileSync('/init', 'utf8');

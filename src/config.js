@@ -9,5 +9,6 @@ module.exports = {
     BACKEND_PORT_WITH_DOTS: BACKEND_PORT ? `:${BACKEND_PORT}` : '',
     SERVER_NAME: process.env.SERVER_NAME || 'NodeService',
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
-    NODE_SERVICE_TOKEN: process.env.NODE_SERVICE_TOKEN
+    NODE_SERVICE_TOKEN: process.env.NODE_SERVICE_TOKEN,
+    BLOCKCHAIN_HOST: 'localhost'
 };
