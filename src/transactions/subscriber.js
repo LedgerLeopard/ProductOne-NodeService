@@ -47,8 +47,8 @@ const emitTransactions = (socket) => {
                     blockNumber: trx.blockNumber,
                     index: trx.transactionIndex,
                     type,
-                    NETWORK_NAME,
-                    VMNAME,
+                    networkName: NETWORK_NAME,
+                    vmName: VMNAME,
                     token
                 };
                 socket.emit('transaction', transaction);
@@ -74,8 +74,8 @@ const emitBlocks = (socket) => {
                 miner: block.miner,
                 timeDate: new Date(),
                 trxCount,
-                NETWORK_NAME,
-                VMNAME,
+                networkName: NETWORK_NAME,
+                vmName: VMNAME,
                 token
             };
             socket.emit('block', blockToEmit);
