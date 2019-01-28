@@ -1,21 +1,22 @@
 const {
-    BLOCKCHAIN_PORT,
     JWT_SECRET_KEY,
-    NODE_SERVICE_TOKEN,
-    BLOCKCHAIN_WS_PORT,
-    BLOCKCHAIN_HOST
+    NODE_SERVICE_TOKEN
 } = require('../config');
-const Web3 = require('web3');
-const web3blocks = new Web3(`ws://${BLOCKCHAIN_HOST}:${BLOCKCHAIN_WS_PORT}`);
-const web3txs = new Web3(`ws://${BLOCKCHAIN_HOST}:${BLOCKCHAIN_WS_PORT}`);
-const web3http = new Web3(`http://${BLOCKCHAIN_HOST}:${BLOCKCHAIN_PORT}`);
+
 const logger = require('../utils/logger');
 const fs = require('fs');
 const configFile = fs.readFileSync('/init', 'utf8');
 const yaml = require('js-yaml');
-const networkName = yaml.safeLoad(configFile)["Network name"];
-const vmName = yaml.safeLoad(configFile)["VM name"];
+const NETWORK_NAME = yaml.safeLoad(configFile)["Network name"];
+const VMNAME = yaml.safeLoad(configFile)["VM name"];
+const CURRENT_IP = yaml.safeLoad(configFile)["Host"];
+const WS_PORT = yaml.safeLoad(configFile)["Parity WS port"];
+const RPC_PORT = yaml.safeLoad(configFile)["Parity RPC port"];
 const token = require('../utils/jwt')(NODE_SERVICE_TOKEN, JWT_SECRET_KEY);
+const Web3 = require('web3');
+const web3blocks = new Web3(`ws://${CURRENT_IP}:${WS_PORT}`);
+const web3txs = new Web3(`ws://${CURRENT_IP}:${WS_PORT}`);
+const web3http = new Web3(`http://${CURRENT_IP}:${RPC_PORT}`);
 
 const emitTransactions = (socket) => {
         web3txs.eth.subscribe('pendingTransactions',
@@ -46,8 +47,8 @@ const emitTransactions = (socket) => {
                     blockNumber: trx.blockNumber,
                     index: trx.transactionIndex,
                     type,
-                    networkName,
-                    vmName,
+                    NETWORK_NAME,
+                    VMNAME,
                     token
                 };
                 socket.emit('transaction', transaction);
@@ -73,8 +74,8 @@ const emitBlocks = (socket) => {
                 miner: block.miner,
                 timeDate: new Date(),
                 trxCount,
-                networkName,
-                vmName,
+                NETWORK_NAME,
+                VMNAME,
                 token
             };
             socket.emit('block', blockToEmit);
