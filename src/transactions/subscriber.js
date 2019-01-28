@@ -34,7 +34,6 @@ const emitTransactions = (socket) => {
             .on('data', async (txHash) => {
                 logger.info(`Try to send trx ${txHash}`);
                 const trx = await web3http.eth.getTransaction(txHash);
-                if (!trx.blockNumber) return;
                 let type = 'Migration';
                 if (!trx.to) type = 'Deploying contract';
                 const transaction = {
@@ -42,10 +41,10 @@ const emitTransactions = (socket) => {
                     minerAccount: trx.miner,
                     timeDate: new Date(),
                     from: trx.from,
-                    to: trx.to,
+                    to: trx.to || 'Contract',
                     data: trx.input,
-                    blockNumber: trx.blockNumber,
-                    index: trx.transactionIndex,
+                    blockNumber: trx.blockNumber || 0,
+                    index: trx.transactionIndex || 0,
                     type,
                     networkName: NETWORK_NAME,
                     vmName: VMNAME,
