@@ -14,12 +14,11 @@ const WS_PORT = yaml.safeLoad(configFile)["Parity WS port"];
 const RPC_PORT = yaml.safeLoad(configFile)["Parity RPC port"];
 const token = require('../utils/jwt')(NODE_SERVICE_TOKEN, JWT_SECRET_KEY);
 const Web3 = require('web3');
-const web3blocks = new Web3(`ws://${CURRENT_IP}:${WS_PORT}`);
-const web3txs = new Web3(`ws://${CURRENT_IP}:${WS_PORT}`);
+const web3ws = new Web3(`ws://${CURRENT_IP}:${WS_PORT}`);
 const web3http = new Web3(`http://${CURRENT_IP}:${RPC_PORT}`);
 
 const emitTransactions = (socket) => {
-        web3txs.eth.subscribe('pendingTransactions',
+    web3ws.eth.subscribe('pendingTransactions',
             (error, result) => {
                 logger.info(error);
                 logger.info(result);
@@ -28,7 +27,7 @@ const emitTransactions = (socket) => {
                 }
                 else {
                     logger.error(error);
-                    web3txs.eth.clearSubscriptions();
+                    web3ws.eth.clearSubscriptions();
                 }
             })
             .on('data', async (txHash) => {
@@ -56,13 +55,13 @@ const emitTransactions = (socket) => {
 };
 
 const emitBlocks = (socket) => {
-        web3blocks.eth.subscribe('newBlockHeaders',
+    web3ws.eth.subscribe('newBlockHeaders',
             (error, result) => {
                 if (!error && error !== '') {
                     logger.info(`Got block with hash ${result.hash}`);
                 } else {
                     logger.error(error);
-                    web3blocks.eth.clearSubscriptions();
+                    web3ws.eth.clearSubscriptions();
                 }
             }).on('data', async (block) => {
             logger.info(`Try to send block ${block.number}`);
