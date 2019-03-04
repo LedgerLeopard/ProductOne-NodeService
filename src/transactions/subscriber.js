@@ -12,7 +12,7 @@ const configFile = fs.readFileSync('/init', 'utf8');
 const yaml = require('js-yaml');
 const networkName = yaml.safeLoad(configFile)["Network name"];
 const vmName = yaml.safeLoad(configFile)["VM name"];
-const token = require('../utils/jwt')(NODE_SERVICE_TOKEN, JWT_SECRET_KEY);
+const token = require('../utils/jwt').generateToken(NODE_SERVICE_TOKEN, JWT_SECRET_KEY);
 
 const emitTransactions = (socket) => {
     web3.eth.subscribe('pendingTransactions' ,

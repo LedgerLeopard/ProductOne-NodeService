@@ -7,4 +7,5 @@ module.exports = {
     SERVER_NAME: process.env.SERVER_NAME,
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     NODE_SERVICE_TOKEN: process.env.NODE_SERVICE_TOKEN,
+    UPDATE_PARITY_SCRIPT: `${__dirname}/static/scripts/update_parity.sh`,
 };

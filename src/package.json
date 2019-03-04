@@ -20,11 +20,12 @@
   },
   "homepage": "https://github.com/LedgerLeopard/ProductOne-NodeService#readme",
   "dependencies": {
+    "body-parser": "latest",
     "dotenv": "^6.1.0",
     "express": "4.16.4",
     "http": "0.0.0",
     "js-yaml": "^3.12.0",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^8.5.0",
     "log4js": "^3.0.6",
     "log4js-extend": "^0.2.1",
     "socket.io": "^2.1.1",

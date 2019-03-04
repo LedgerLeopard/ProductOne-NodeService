@@ -12,4 +12,15 @@ function generateToken(token, secret) {
     );
 }
 
-module.exports = generateToken;
+function decode(jwtString, secretKey) {
+    try {
+        return jwt.decode(jwtString, secretKey).token;
+    } catch (e) {
+        return undefined;
+    }
+}
+
+module.exports = {
+    generateToken,
+    decode,
+};
