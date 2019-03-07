@@ -14,6 +14,7 @@ function generateToken(token, secret) {
 
 function decode(jwtString, secretKey) {
     try {
+        jwt.verify(jwtString, secretKey);
         return jwt.decode(jwtString, secretKey).token;
     } catch (e) {
         return undefined;
