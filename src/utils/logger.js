@@ -34,6 +34,26 @@ log4jsExtend(log4js, {
     format: 'at @name (@file:@line:@column)',
 });
 
+log4js.configure({
+    appenders: {
+        file: {
+            type: 'dateFile',
+            filename: './logs/nodeservice',
+            pattern: '.yyyy-MM-dd.log',
+            alwaysIncludePattern: true,
+            layout: {
+                type: 'pattern',
+                pattern: '%d %p %m',
+            },
+        },
+    },
+    categories: {
+        default: {
+            appenders: ['file'],
+            level: 'debug',
+        },
+    },
+});
 const logger = log4js.getLogger();
 
 module.exports = logger;
