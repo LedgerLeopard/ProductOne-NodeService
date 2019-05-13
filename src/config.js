@@ -8,4 +8,6 @@ module.exports = {
     SERVER_NAME: process.env.SERVER_NAME || 'NodeService',
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     NODE_SERVICE_TOKEN: process.env.NODE_SERVICE_TOKEN,
+    BRANCH: process.env.BRANCH,
+    SHORT: process.env.SHORT,
 };
