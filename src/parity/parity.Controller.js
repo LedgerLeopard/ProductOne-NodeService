@@ -45,7 +45,7 @@ async function updateVersion(req, res) {
 
     logger.info('Backup data');
     fs.copyFileSync(SERVICE_SH_PATH, SERVICE_SH_BACKUP_PATH);
-    fs.mkdirSync(BACKUP_DIR);
+    fse.ensureDir(BACKUP_DIR);
     fse.copySync(CONFIG_DIR, CONFIG_DIR_BACKUP);
     fse.copySync(DB_DIR, DB_DIR_BACKUP);
 
