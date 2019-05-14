@@ -1,4 +1,5 @@
 const fs = require('fs');
+const fse = require('fs-extra');
 const shellExec = require('shell-exec');
 const logger = require('../utils/logger');
 
@@ -45,8 +46,8 @@ async function updateVersion(req, res) {
     logger.info('Backup data');
     fs.copyFileSync(SERVICE_SH_PATH, SERVICE_SH_BACKUP_PATH);
     fs.mkdirSync(BACKUP_DIR);
-    fs.copyFileSync(CONFIG_DIR, CONFIG_DIR_BACKUP);
-    fs.copyFileSync(DB_DIR, DB_DIR_BACKUP);
+    fse.copySync(CONFIG_DIR, CONFIG_DIR_BACKUP);
+    fse.copySync(DB_DIR, DB_DIR_BACKUP);
 
     logger.info('Update version at service file');
     const newVersionScript = script.replace(/parity\/parity:[^\s]+/, `parity/parity:${newVersion} `);
@@ -80,11 +81,11 @@ async function updateVersion(req, res) {
 
             logger.info('Restore files from backup');
             fs.copyFileSync(SERVICE_SH_BACKUP_PATH, SERVICE_SH_PATH);
-            fs.copyFileSync(CONFIG_DIR_BACKUP, CONFIG_DIR);
-            fs.copyFileSync(DB_DIR_BACKUP, DB_DIR);
+            fse.copySync(CONFIG_DIR_BACKUP, CONFIG_DIR);
+            fse.copySync(DB_DIR_BACKUP, DB_DIR);
             logger.info('Remove backups');
             fs.unlinkSync(SERVICE_SH_BACKUP_PATH);
-            fs.unlinkSync(BACKUP_DIR);
+            fse.removeSync(BACKUP_DIR);
 
             await restartParity();
 
