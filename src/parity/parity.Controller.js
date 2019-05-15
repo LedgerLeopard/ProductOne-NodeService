@@ -33,6 +33,27 @@ async function restartParity() {
     await shellExec('sudo systemctl restart parity');
 }
 
+async function pullNewVersion(newVersion) {
+    logger.info('Pull parity version');
+    await shellExec(`sudo docker image pull parity/parity:${newVersion}`);
+}
+
+function backupData() {
+    logger.info('Backup data');
+    fs.copyFileSync(SERVICE_SH_PATH, SERVICE_SH_BACKUP_PATH);
+    fse.ensureDir(BACKUP_DIR);
+    fse.copySync(CONFIG_DIR, CONFIG_DIR_BACKUP);
+    fse.copySync(DB_DIR, DB_DIR_BACKUP);
+    logger.info('Backup was created');
+}
+
+function removeBackups() {
+    logger.info('Remove backups');
+    fse.removeSync(SERVICE_SH_BACKUP_PATH);
+    fse.removeSync(BACKUP_DIR);
+    logger.info('Backups were removed');
+}
+
 async function updateVersion(req, res) {
     req.setTimeout(UPDATE_MAX_ATTEMPTS * INTERVAL_DELAY * 2);
 
@@ -43,18 +64,13 @@ async function updateVersion(req, res) {
     const script = fs.readFileSync(SERVICE_SH_PATH, 'utf-8');
     let containerName = parseContainerName(script);
 
-    logger.info('Backup data');
-    fs.copyFileSync(SERVICE_SH_PATH, SERVICE_SH_BACKUP_PATH);
-    fse.ensureDir(BACKUP_DIR);
-    fse.copySync(CONFIG_DIR, CONFIG_DIR_BACKUP);
-    fse.copySync(DB_DIR, DB_DIR_BACKUP);
+    backupData();
 
     logger.info('Update version at service file');
     const newVersionScript = script.replace(/parity\/parity:[^\s]+/, `parity/parity:${newVersion} `);
     fs.writeFileSync(SERVICE_SH_PATH, newVersionScript);
 
-    logger.info('Pull parity version');
-    await shellExec(`sudo docker image pull parity/parity:${newVersion}`);
+    await pullNewVersion(newVersion);
 
     await restartParity();
 
@@ -66,9 +82,7 @@ async function updateVersion(req, res) {
             if (containerStatus === 'running') {
                 logger.info('Container is running');
                 clearInterval(updateInterval);
-                logger.info('Remove backups');
-                fs.unlinkSync(SERVICE_SH_BACKUP_PATH);
-                fs.unlinkSync(BACKUP_DIR);
+                removeBackups();
                 res.send(200);
             }
         } catch (e) {
@@ -83,9 +97,6 @@ async function updateVersion(req, res) {
             fs.copyFileSync(SERVICE_SH_BACKUP_PATH, SERVICE_SH_PATH);
             fse.copySync(CONFIG_DIR_BACKUP, CONFIG_DIR);
             fse.copySync(DB_DIR_BACKUP, DB_DIR);
-            logger.info('Remove backups');
-            fs.unlinkSync(SERVICE_SH_BACKUP_PATH);
-            fse.removeSync(BACKUP_DIR);
 
             await restartParity();
 
